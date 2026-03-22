@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  inventree:
+    image: inventree/inventree:latest
+    container_name: inventree-api-test
+    ports:
+      - "8000:8000"
+    environment:
+      # Database Configuration
+      INVENTREE_DB_ENGINE: sqlite3
+      INVENTREE_DB_NAME: /home/inventree/data/inventree.db
+
+      # Admin User (for testing)
+      INVENTREE_ADMIN_USER: admin
+      INVENTREE_ADMIN_PASSWORD: admin
+      INVENTREE_ADMIN_EMAIL: admin@example.com
+
+      # Development Settings
+      INVENTREE_DEBUG: True
+      INVENTREE_LOG_LEVEL: INFO
+
+      # Server Configuration
+      INVENTREE_WEB_PORT: 8000
+      INVENTREE_TIMEZONE: UTC
+
+      # Plugin Settings (disabled for testing)
+      INVENTREE_PLUGINS_ENABLED: False
+
+    volumes:
+      - inventree_data:/home/inventree/data
+      - inventree_media:/home/inventree/data/media
+      - inventree_static:/home/inventree/data/static
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+    restart: unless-stopped
+
+  # Optional: PostgreSQL database (uncomment if needed)
+  # postgres:
+  #   image: postgres:13
+  #   container_name: inventree-postgres
+  #   environment:
+  #     POSTGRES_DB: inventree
+  #     POSTGRES_USER: inventree
+  #     POSTGRES_PASSWORD: inventree_password
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U inventree"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
+
+volumes:
+  inventree_data:
+  inventree_media:
+  inventree_static:
+  # postgres_data:

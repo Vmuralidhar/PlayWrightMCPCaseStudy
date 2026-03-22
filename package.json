@@ -1,0 +1,33 @@
+{
+  "name": "playwrightmcp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test tests/inventree-parts-api.spec.ts",
+    "test:ci": "playwright test tests/inventree-parts-api.spec.ts --workers=2 --reporter=json,junit,html",
+    "test:debug": "playwright test tests/inventree-parts-api.spec.ts --debug",
+    "test:ui": "playwright test tests/inventree-parts-api.spec.ts --ui",
+    "test:smoke": "playwright test tests/inventree-parts-api.spec.ts -g \"CRUD\"",
+    "test:headed": "HEADLESS=false playwright test tests/inventree-parts-api.spec.ts",
+    "report": "playwright show-report",
+    "setup": "./run-api-tests.bat setup",
+    "start:inventree": "./run-api-tests.bat start",
+    "stop:inventree": "./run-api-tests.bat stop",
+    "install:deps": "npm install && npx playwright install"
+  },
+  "keywords": [
+    "playwright",
+    "api-testing",
+    "inventree",
+    "automation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "Playwright API testing framework for InvenTree Parts and Categories",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0",
+    "dotenv": "^16.3.1",
+    "typescript": "^5.9.3"
+  }
+}
